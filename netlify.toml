@@ -1,8 +1,23 @@
 [build]
-  command = "python scripts/generate_tutorials.py"
-  publish = "."
+command = "bash build.sh && python3 scripts/generate_tutorials.py && python3 scripts/apply_fixes_to_html.py"
+publish = "."
 
 [[redirects]]
-  from = "/templates"
-  to = "/integracoes"
-  status = 302
+from = "/templates"
+to = "/integracoes"
+status = 302
+
+# Ensure integration pages are properly served
+[[headers]]
+for = "/integracoes-paginas/*"
+[headers.values]
+Cache-Control = "public, max-age=3600"
+Content-Type = "text/html; charset=utf-8"
+
+# Security headers
+[[headers]]
+for = "/*"
+[headers.values]
+X-Content-Type-Options = "nosniff"
+X-Frame-Options = "SAMEORIGIN"
+X-XSS-Protection = "1; mode=block"
