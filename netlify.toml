@@ -1,0 +1,8 @@
+[build]
+  command = "python scripts/generate_tutorials.py"
+  publish = "."
+
+[[redirects]]
+  from = "/templates"
+  to = "/integracoes"
+  status = 302
