@@ -42,7 +42,7 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
       
       - name: Generate tutorials and metadata (if API key available)
-        if: ${{ secrets.OPENAI_API_KEY != '' }}
+        if: ${{ secrets.OPENAI_API_KEY }}
         run: |
           python -m scripts.main --n8n-limit 20 --zapier-limit 20
         env:

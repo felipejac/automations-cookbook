@@ -80,12 +80,14 @@ class TutorialGenerator:
             logger.info(f"Successfully generated tutorial for: {title}")
             return tutorial
             
-        except openai.APIError as e:
-            logger.error(f"OpenAI API error: {e}")
-            raise TutorialGeneratorError(f"Failed to generate tutorial: {e}")
         except Exception as e:
-            logger.error(f"Error generating tutorial: {e}")
-            raise TutorialGeneratorError(f"Tutorial generation failed: {e}")
+            # Handle various OpenAI exceptions
+            if 'openai' in str(type(e).__module__):
+                logger.error(f"OpenAI API error: {e}")
+            else:
+                logger.error(f"Error generating tutorial: {e}")
+            raise TutorialGeneratorError(f"Failed to generate tutorial: {e}")
+
     
     def generate_batch_tutorials(self, templates: List[Dict]) -> List[Dict]:
         """
@@ -149,13 +151,16 @@ Keep the tutorial clear, concise, and beginner-friendly."""
         Returns:
             List of section dictionaries
         """
+        import re
+        
         sections = []
         current_section = None
         current_content = []
         
         for line in content.split('\n'):
-            # Check if line is a section header (starts with number or ##)
-            if line.strip().startswith(('1.', '2.', '3.', '4.', '5.', '6.', '7.', '##')):
+            # Check if line is a section header using regex patterns
+            # Matches: "1. ", "2. ", etc., or "## ", "### ", etc.
+            if re.match(r'^\d+\.\s', line.strip()) or re.match(r'^#{1,3}\s', line.strip()):
                 # Save previous section
                 if current_section:
                     sections.append({

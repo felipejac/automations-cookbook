@@ -101,8 +101,9 @@ class N8nTemplateScraper(TemplateScraper):
             
             soup = self._parse_html(response.text)
             
-            # Note: This is a placeholder implementation
-            # Actual selectors need to be updated based on n8n's website structure
+            # NOTE: The CSS selectors below are placeholders and need to be updated
+            # based on the actual HTML structure of n8n.io/workflows
+            # Inspect the page source to find the correct selectors
             template_elements = soup.find_all('div', class_='workflow-card', limit=limit)
             
             for idx, element in enumerate(template_elements):
@@ -173,8 +174,9 @@ class ZapierTemplateScraper(TemplateScraper):
             
             soup = self._parse_html(response.text)
             
-            # Note: This is a placeholder implementation
-            # Actual selectors need to be updated based on Zapier's website structure
+            # NOTE: The CSS selectors below are placeholders and need to be updated
+            # based on the actual HTML structure of zapier.com/apps
+            # Inspect the page source to find the correct selectors
             template_elements = soup.find_all('div', class_='zap-template', limit=limit)
             
             for idx, element in enumerate(template_elements):
