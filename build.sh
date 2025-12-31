@@ -7,15 +7,6 @@ echo "========================================"
 echo "Building Automations Cookbook"
 echo "========================================"
 
-# Step 1: Apply fixes to integration pages
-echo ""
-echo "Step 1: Applying fixes to integration pages..."
-if [ -f "scripts/apply_fixes_to_html.py" ]; then
-    python3 scripts/apply_fixes_to_html.py
-    echo "✓ HTML fixes applied"
-else
-    echo "⚠ apply_fixes_to_html.py not found"
-fi
 
 # Step 2: Generate/update integration pages  
 echo ""
