@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automations Cookbook - API</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 { color: #2563eb; }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .endpoint {
+            background: #f9fafb;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin: 15px 0;
+        }
+        a { color: #2563eb; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <h1>🤖 Automations Cookbook API</h1>
+    <p>Welcome to the Automations Cookbook API - your source for automation templates and tutorials.</p>
+    
+    <h2>Available Endpoints</h2>
+    
+    <div class="endpoint">
+        <h3>GET /api/templates</h3>
+        <p>Get all automation templates</p>
+        <code>curl https://your-site.netlify.app/api/templates</code>
+    </div>
+    
+    <div class="endpoint">
+        <h3>GET /api/templates?source=n8n</h3>
+        <p>Filter templates by source (n8n or zapier)</p>
+        <code>curl https://your-site.netlify.app/api/templates?source=n8n</code>
+    </div>
+    
+    <div class="endpoint">
+        <h3>GET /api/templates?limit=10</h3>
+        <p>Limit number of results</p>
+        <code>curl https://your-site.netlify.app/api/templates?limit=10</code>
+    </div>
+    
+    <h2>Documentation</h2>
+    <p>For complete documentation, visit the <a href="https://github.com/felipejac/automations-cookbook">GitHub repository</a>.</p>
+    
+    <h2>Features</h2>
+    <ul>
+        <li>🔄 Automated weekly scraping of n8n and Zapier templates</li>
+        <li>🤖 AI-generated tutorials using OpenAI</li>
+        <li>📝 SEO-optimized metadata</li>
+        <li>🚀 RESTful API access</li>
+    </ul>
+</body>
+</html>
