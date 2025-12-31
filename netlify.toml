@@ -1,6 +1,5 @@
 [build]
-command = "bash build.sh && python3 scripts/generate_tutorials.py && python3 scripts/apply_fixes_to_html.py"
-publish = "."
+command = "bash build.sh && python3 scripts/generate_tutorials.py"publish = "."
 
 [[redirects]]
 from = "/templates"
