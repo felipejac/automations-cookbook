@@ -1,0 +1,93 @@
+name: Weekly Template Scraping & Content Generation
+
+on:
+  schedule:
+    # Run every Monday at 9:00 AM UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch:  # Allow manual triggering
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/**'
+
+jobs:
+  scrape-and-generate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Create data directory
+        run: mkdir -p data cache
+      
+      - name: Run scraper only (no LLM)
+        run: |
+          python -m scripts.main --n8n-limit 20 --zapier-limit 20 --no-tutorials
+        env:
+          # OpenAI API key from secrets (optional for scraping only)
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      
+      - name: Generate tutorials and metadata (if API key available)
+        if: ${{ secrets.OPENAI_API_KEY != '' }}
+        run: |
+          python -m scripts.main --n8n-limit 20 --zapier-limit 20
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        continue-on-error: true
+      
+      - name: Upload scraped data as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: scraped-templates
+          path: data/
+          retention-days: 90
+      
+      - name: Commit and push if changes
+        run: |
+          git config --global user.name 'GitHub Actions Bot'
+          git config --global user.email 'actions@github.com'
+          git add data/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Update scraped templates [automated]" && git push)
+        continue-on-error: true
+
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Check Python syntax
+        run: |
+          python -m py_compile scripts/*.py
+      
+      - name: Test imports
+        run: |
+          python -c "from scripts import Config, get_logger"
+          python -c "from scripts.scraper import N8nTemplateScraper, ZapierTemplateScraper"
+          python -c "from scripts.metadata_generator import MetadataGenerator"
